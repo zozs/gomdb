@@ -8,7 +8,7 @@ import (
 var apiKey = os.Getenv("OMDB_API_KEY")
 
 func TestNoKey(t *testing.T) {
-	api := Init("")
+	api := Init("", false)
 	_, err := api.Search(&QueryData{Title: "Her"})
 	if err == nil {
 		t.Errorf("Expected to fail")
@@ -40,7 +40,7 @@ func TestSearch(t *testing.T) {
 			"2015",
 		},
 	}
-	api := Init(apiKey)
+	api := Init(apiKey, false)
 	for i, item := range tests {
 		resp, err := api.Search(item.query)
 		if err != nil {
@@ -66,7 +66,7 @@ func TestFailSearch(t *testing.T) {
 		{&QueryData{Title: "Dexter", SearchType: EpisodeSearch}},
 	}
 
-	api := Init(apiKey)
+	api := Init(apiKey, false)
 	for i, item := range tests {
 		_, err := api.Search(item.query)
 		if err == nil {
@@ -89,7 +89,7 @@ func TestInvalidCategory(t *testing.T) {
 		{&QueryData{Title: "Dexter", SearchType: "bad"}},
 	}
 
-	api := Init(apiKey)
+	api := Init(apiKey, false)
 	for i, item := range tests {
 		_, err := api.Search(item.query)
 		if err == nil {
@@ -124,7 +124,7 @@ func TestMovieByTitle(t *testing.T) {
 		},
 	}
 
-	api := Init(apiKey)
+	api := Init(apiKey, false)
 
 	for i, item := range tests {
 		resp, err := api.MovieByTitle(item.query)
@@ -166,7 +166,7 @@ func TestMovieByImdbID(t *testing.T) {
 		},
 	}
 
-	api := Init(apiKey)
+	api := Init(apiKey, false)
 
 	for i, item := range tests {
 		resp, err := api.MovieByImdbID(item.id)

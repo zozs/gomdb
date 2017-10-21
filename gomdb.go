@@ -11,6 +11,7 @@ import (
 
 const (
 	baseURL  = "http://www.omdbapi.com/?"
+	baseURLTLS  = "https://www.omdbapi.com/?"
 	plot     = "full"
 	tomatoes = "true"
 
@@ -21,10 +22,11 @@ const (
 
 type OmdbApi struct {
 	apiKey string
+	useTLS bool
 }
 
-func Init(apiKey string) *OmdbApi {
-	return &OmdbApi{apiKey: apiKey}
+func Init(apiKey string, useTLS bool) *OmdbApi {
+	return &OmdbApi{apiKey: apiKey, useTLS: useTLS}
 }
 
 // QueryData is the type to create the search query
@@ -158,7 +160,11 @@ func (api *OmdbApi) MovieByImdbID(id string) (*MovieResult, error) {
 // param: params are the variadic list of params passed for that category
 func (api *OmdbApi) requestAPI(apiCategory string, params ...string) (resp *http.Response, err error) {
 	var URL *url.URL
-	URL, err = url.Parse(baseURL)
+	if api.useTLS {
+		URL, err = url.Parse(baseURL)
+	} else {
+		URL, err = url.Parse(baseURLTLS)
+	}
 	if err != nil {
 		return nil, err
 	}

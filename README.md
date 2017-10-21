@@ -31,7 +31,7 @@ import (
 )
 
 func main() {
-        api := gomdb.Init(YOUR_API_KEY)
+        api := gomdb.Init(YOUR_API_KEY, false) // or true to use TLS
 	query := &gomdb.QueryData{Title: "Macbeth", SearchType: gomdb.MovieSearch}
 	res, err := api.Search(query)
 	if err != nil {
